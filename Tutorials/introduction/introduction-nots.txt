@@ -1,0 +1,41 @@
+RabbitMQ is a message broker: it accepts and forwards messages.
+It accepts, stores and forwards binary blobs of data messages.
+
+RabbitMQ
+ - Asynchronous Messaging
+    - Flexible routing to queues
+    - Multiple messaging protocols
+    - Message queuing
+    - Delivery ACK(Acknowledgement)
+ - Developer Experience
+    - Cross-Language messaging
+ - Distributed Deployment
+    - Deploy as clusters for high availability and throughtput
+    - Federate across multiple availability zones and regions
+ - Enterprise & Clous Ready
+    - Lightweight and easy to deploy in public and private clouds
+ - Tools & Plugins
+    - Diverse array of tools and plugins supporting:
+        - Continuous integration
+        - Operational  metrics
+        - Integration
+ - Management & Monitoring
+    - HTTP-API, command line tool and UI
+
+
+
+Producer
+ - Sends messages to queue
+
+Queue
+ - A queue is messages order inside RabbitMQ
+ - A queue is only bound by the host's memory & disk limits, it's essentially a large message buffer
+ - Many producers can send messages that go to one queue, and many consumers can try to receive data from one queue.
+
+Consumer
+ - A consumer is a program that mostly waits to receive messages
+
+NOTE
+ - Producer, consumer and broker dont have to reside on the same host
+ - An application can be both a producer and consumer
+
