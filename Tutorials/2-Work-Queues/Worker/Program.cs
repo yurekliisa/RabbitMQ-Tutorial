@@ -1,0 +1,70 @@
+﻿using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System;
+using System.Text;
+using System.Threading;
+
+namespace Worker
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var factory = new ConnectionFactory()
+            {
+                UserName = "yurekliisa",
+                Password = "123qwe",
+                HostName = "localhost"
+            };
+
+            using (var connection = factory.CreateConnection())
+            {
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(
+                            queue: "task_queue",
+                            durable: true,
+                            exclusive: false,
+                            autoDelete: false,
+                            arguments: null
+                        );
+
+                    //if Consumer bussy, rabbitmq send message available consumer
+                    //pretechCount 1, Consumer aynı anda 1 tane mesaj alır
+                    channel.BasicQos(
+                            prefetchSize: 0,
+                            prefetchCount: 1,
+                            global: false
+                        );
+
+                    var consumer = new EventingBasicConsumer(channel);
+                    consumer.Received += (sender, ea) =>
+                    {
+                        var body = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+                        Console.WriteLine(" [x] Received {0}", message);
+
+                        int dots = message.Split('.').Length - 1;
+                        Thread.Sleep(dots * 1000);
+
+                        Console.WriteLine(" [x] Done");
+
+                        channel.BasicAck(
+                            deliveryTag: ea.DeliveryTag,
+                            multiple: false
+                            );
+
+                    };
+
+                    channel.BasicConsume(
+                        queue: "task_queue",
+                        autoAck: false,
+                        consumer: consumer
+                       );
+                }
+            }
+
+            Console.ReadLine();
+        }
+    }
+}

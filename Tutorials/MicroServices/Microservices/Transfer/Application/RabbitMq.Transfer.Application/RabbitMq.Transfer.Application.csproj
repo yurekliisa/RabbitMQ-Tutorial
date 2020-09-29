@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Domain\RabbitMq.Domain.Core\RabbitMq.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\Domain\RabbitMq.Transfer.Domain\RabbitMq.Transfer.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

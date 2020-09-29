@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\RabbitMq.Domain.Core\RabbitMq.Domain.Core.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
+    <PackageReference Include="newtonsoft.json" Version="12.0.3" />
+    <PackageReference Include="rabbitmq.client" Version="6.2.1" />
+  </ItemGroup>
+
+</Project>

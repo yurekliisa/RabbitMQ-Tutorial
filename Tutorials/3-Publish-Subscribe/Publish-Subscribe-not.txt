@@ -1,0 +1,59 @@
+Publish/Subscribe
+The assumption behind a work queue is that each task is delivered to exactly one worker. 
+In this part we'll do something completely different -- we'll deliver a message to multiple consumers.
+This pattern is known as "publish/subscribe".
+
+Essentially, published log messages are going to be broadcast to all the receivers.
+
+Exchanges
+In previous parts of the tutorial we sent and received messages to and from a queue.
+Let's quickly go over what we covered in the previous tutorials:
+	A producer is a user application that sends messages.
+	A queue is a buffer that stores messages.
+	A consumer is a user application that receives messages.
+
+The core idea in the messaging model in RabbitMQ is that the producer never sends any messages directly to a queue. 
+Actually, quite often the producer doesn't even know if a message will be delivered to any queue at all.
+
+Instead, the producer can only send messages to an exchange. 
+An exchange is a very simple thing. 
+On one side it receives messages from producers and the other side it pushes them to queues. 
+The exchange must know exactly what to do with a message it receives. 
+Should it be appended to a particular queue? 
+Should it be appended to many queues? Or should it get discarded. 
+The rules for that are defined by the exchange type.
+
+
+There are a few exchange types available: direct, topic, headers and fanout. 
+We'll focus on the last one -- the fanout. Let's create an exchange of this type, and call it logs:
+channel.ExchangeDeclare("logs", ExchangeType.Fanout);
+
+
+The default exchange
+we knew nothing about exchanges, but still were able to send messages to queues. 
+That was possible because we were using a default exchange, which we identify by the empty string ("").
+he first parameter is the name of the exchange. 
+The empty string denotes the default or nameless exchange: messages are routed to the queue with the name specified by routingKey, if it exists.
+
+Temporary queues
+ we needed to point the workers to the same queue. 
+Giving a queue a name is important when you want to share the queue between producers and consumers.
+
+We're also interested only in currently flowing messages not in the old ones. To solve that we need two things.
+Firstly, whenever we connect to Rabbit we need a fresh, empty queue. 
+To do this we could create a queue with a random name, or, even better - let the server choose a random queue name for us.
+Secondly, once we disconnect the consumer the queue should be automatically deleted.
+
+we create a non-durable, exclusive, autodelete queue with a generated name:
+var queueName = channel.QueueDeclare().QueueName;
+At that point queueName contains a random queue name. For example it may look like amq.gen-JzTY20BRgKO-HjmUJj0wLg.
+
+We've already created a fanout exchange and a queue. 
+Now we need to tell the exchange to send messages to our queue. 
+That relationship between exchange and a queue is called a binding.
+channel.QueueBind(queue: queueName,
+                  exchange: "logs",
+                  routingKey: "");
+
+From now on the logs exchange will append messages to our queue.
+
