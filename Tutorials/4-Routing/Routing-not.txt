@@ -1,2 +1,24 @@
 Routing
 
+we're going to make it possible to subscribe only to a subset of the messages. For example, we will be able to direct only critical error messages to the log file (to save disk space), while still being able to print all of the log messages on the console.
+
+
+Bindings
+A binding is a relationship between an exchange and a queue. This can be simply read as: the queue is interested in messages from this exchange.
+Bindings can take an extra routingKey parameter. To avoid the confusion with a BasicPublish parameter we're going to call it a binding key. This is how we could create a binding with a key:
+The meaning of a binding key depends on the exchange type. 
+
+Direct exchange
+Extend that to allow filtering messages based on their severity. For example we may want the script which is writing log messages to the disk to only receive critical errors, and not waste disk space on warning or info log messages.
+
+We were using a fanout exchange, which doesn't give us much flexibility - it's only capable of mindless broadcasting.
+We will use a direct exchange instead. The routing algorithm behind a direct exchange is simple - a message goes to the queues whose binding key exactly matches the routing key of the message.
+
+Single binding
+the direct exchange X with two queues bound to it. 
+Routing key orange will be routed to queue q1
+Routing key of balck or green will go to q2
+
+Multiple bindings
+It is perfectly legal to bind multiple queues with the same binding key.
+In that case, the direct exchange will behave like fanout and will broadcast the message to all the matching queues. A message with routing key black will be delivered to both Q1 and Q2.
