@@ -1,5 +1,4 @@
-﻿using System.Security.Authentication.ExtendedProtection;
-using System.Text;
+﻿using System.Text;
 using System;
 using RabbitMQ.Client;
 
@@ -9,9 +8,7 @@ namespace NewTask
     {
         static void Main(string[] args)
         {
-            var message = GetMessage(args);
-            var body = Encoding.UTF8.GetBytes(message);
-
+          
             var factory = new ConnectionFactory()
             {
                 UserName = "yurekliisa",
@@ -32,6 +29,9 @@ namespace NewTask
                         arguments: null
                       );
 
+                    var message = GetMessage(args);
+                    var body = Encoding.UTF8.GetBytes(message);
+
                     var properties = channel.CreateBasicProperties();
                     //queue won't be lost even if RabbitMQ restarts
                     properties.Persistent = true;
@@ -42,6 +42,7 @@ namespace NewTask
                         basicProperties: properties,
                         body: body
                     );
+                    Console.WriteLine(" [x] Sent {0}", message);
                 }
             }
 

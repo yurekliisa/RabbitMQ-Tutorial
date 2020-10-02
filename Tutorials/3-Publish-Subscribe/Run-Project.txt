@@ -1,0 +1,6 @@
+ReceiveLogs
+dotnet run > logs_from_rabbit.log => log file tutar
+dotnet run => console appde print ettiririz.
+
+EmitLogDirect
+dotnet run => project run 

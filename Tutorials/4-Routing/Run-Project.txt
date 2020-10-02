@@ -1,0 +1,7 @@
+ReceiveLogsDirect 
+dotnet run warning error > logs_from_rabbit.log => warning ve errorleri log file dosyasına yazar
+dotnet run info warning => info ve warningleri console'ye print eder
+
+
+EmitLogDirect
+dotnet run error "Run. Run. Or it will explode." => error tipinde mesaj gönderir

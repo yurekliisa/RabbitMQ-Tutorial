@@ -37,6 +37,8 @@ namespace Worker
                             global: false
                         );
 
+                    Console.WriteLine(" [*] Waiting for messages.");
+
                     var consumer = new EventingBasicConsumer(channel);
                     consumer.Received += (sender, ea) =>
                     {
@@ -61,6 +63,9 @@ namespace Worker
                         autoAck: false,
                         consumer: consumer
                        );
+
+                    Console.WriteLine(" Press [enter] to exit.");
+                    Console.ReadLine();
                 }
             }
 

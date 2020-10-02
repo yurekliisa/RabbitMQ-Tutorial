@@ -44,7 +44,7 @@ namespace Sender
                         basicProperties: null,
                         body: body
                     );
-                    System.Console.WriteLine("[X] Sent {0}",message);
+                    Console.WriteLine("[X] Sent {0}",message);
                 }
             }
             Console.ReadLine();
